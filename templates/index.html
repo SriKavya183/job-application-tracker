@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Application Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        h2 {
+            text-align: center;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0;
+        }
+        button {
+            padding: 8px 14px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .job {
+            padding: 12px 0;
+            border-bottom: 1px solid #e6e6e6;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>Job Application Tracker</h2>
+
+    <!-- Add Job Form -->
+    <h3>Add Job</h3>
+    <form method="post">
+        <input type="hidden" name="action" value="add">
+        <input type="text" name="company" placeholder="Company name" required>
+        <input type="text" name="role" placeholder="Role" required>
+        <button type="submit">Add Job</button>
+    </form>
+
+    <!-- Job List -->
+    <h3>My Jobs</h3>
+
+    {% if not jobs %}
+        <p>No jobs added yet.</p>
+    {% endif %}
+
+    {% for job in jobs %}
+        <div class="job">
+            <b>Company:</b> {{ job.company }}<br>
+            <b>Role:</b> {{ job.role }}<br>
+            <b>Status:</b> {{ job.status }}
+
+            <!-- Update Form -->
+            <form method="post" style="margin-top:8px;">
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="company" value="{{ job.company }}">
+                <select name="status">
+                    <option {% if job.status == "Applied" %}selected{% endif %}>Applied</option>
+                    <option {% if job.status == "Interview" %}selected{% endif %}>Interview</option>
+                    <option {% if job.status == "Offer" %}selected{% endif %}>Offer</option>
+                    <option {% if job.status == "Rejected" %}selected{% endif %}>Rejected</option>
+                </select>
+                <button type="submit">Update Status</button>
+            </form>
+        </div>
+    {% endfor %}
+
+</div>
+</body>
+</html>
